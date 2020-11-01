@@ -7,42 +7,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    val list = ArrayList<Users>()
-    val listUsers = arrayOf(
-        "Alpha",
-        "Bravo",
-        "Charlie",
-        "Delta",
-        "Echo",
-        "Foxtrot",
-        "Golf",
-        "Hotel",
-        "India",
-        "Juliet"
-    )
-
-    val halo = arrayOf("halo")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        for (i in 0 until listUsers.size){
-            list.add(Users(listUsers.get(i)))
-            if(listUsers.size - 1 == i){
-                val adapter = Adapter(list)
-                adapter.notifyDataSetChanged()
-                mRecyclerView.adapter = adapter
-                adapter.setOnClickListener {
-                    Toast.makeText(
-                        this, "Halo "
-                                + listUsers[it], Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+
+        val listBooks = listOf(
+            Book(name = "Ahiru No Sora", image = "https://cdn.myanimelist.net/images/anime/1975/108030.jpg"),
+            Book(name = "Aono Excorsist", image = "https://upload.wikimedia.org/wikipedia/id/8/82/Ao_no_Exorcist.jpg"),
+            Book(name = "Black Clover", image = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Black_Clover_Volume_1_Blu-Ray.jpg/220px-Black_Clover_Volume_1_Blu-Ray.jpg"),
+            Book(name = "Boruto", image = "https://upload.wikimedia.org/wikipedia/id/thumb/d/db/Boruto_manga_vol_1.jpg/220px-Boruto_manga_vol_1.jpg"),
+            Book(name = "Captain Tsubasa", image = "https://cdn.myanimelist.net/images/anime/1866/91270.jpg"),
+            Book(name = "My Hero Academia", image = "https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/My_Hero_Academia_-_Two_Heroes_poster.jpg/220px-My_Hero_Academia_-_Two_Heroes_poster.jpg"),
+            Book(name = "Naruto", image = "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg"),
+            Book(name = "One Piece", image = "https://upload.wikimedia.org/wikipedia/en/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg"),
+            Book(name = "Tate No Yusha", image = "https://cdn.myanimelist.net/images/anime/1490/101365.jpg")
+            )
+
+        val booksAdapter = BookAdapter(listBooks) {book ->
+            Toast.makeText(this, "Anime ini berjudul ${book.name}", Toast.LENGTH_SHORT).show()
         }
-        mRecyclerView.scrollToPosition(
-            halo.size - 1);
+        mRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = booksAdapter
+        }
     }
 }

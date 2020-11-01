@@ -1,3 +1,6 @@
 package com.example.recycleview
 
-data class Users (val name:String?)
+data class Book
+    (val name:String,
+     val image:String
+)

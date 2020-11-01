@@ -1,44 +1,35 @@
 package com.example.recycleview
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list.view.*
 
+class BookAdapter(private val books: List<Book>,
+                  private val adapterOnClick: (Book) -> Unit) : RecyclerView.Adapter<BookAdapter.BookHolder>() {
 
-class Adapter(private val list: ArrayList<Users>) :
-    RecyclerView.Adapter<Adapter.Holder>() {
-    var context : Context?= null
-    var clickListener : OnClickListener?= null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list,parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookHolder {
+        return BookHolder(LayoutInflater.from(parent.context).inflate(R.layout.list,parent,false))
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = books.size
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.view.lbList.text = list.get(position).name
-        holder.view.halo.setText("Halo")
-        holder.view.setOnClickListener({v ->
-            clickListener?.onClick(position)})
+    override fun onBindViewHolder(holder: BookHolder, position: Int) {
+        holder.bindBook(books[position])
     }
 
-    fun setOnClickListener(listener: (Int) ->
-    Unit){
-        this.clickListener = object:
-            OnClickListener {
-            override fun onClick(position: Int) {
-                listener(position)
+    inner class BookHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bindBook(book: Book) {
+            itemView.apply {
+                lbList.text = book.name
+                Picasso.get().load(book.image).into(imgbook)
+
+                setOnClickListener {
+                    adapterOnClick(book)
+                }
             }
         }
-    }
-
-    class Holder(val view: View) :
-        RecyclerView.ViewHolder(view)
-    interface OnClickListener {
-        fun onClick(position: Int)
     }
 }
